@@ -3,7 +3,6 @@ package com.jenkins.pong;
 import javax.swing.JFrame;
 import java.awt.Graphics2D;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
 
 public class Window extends JFrame implements Runnable{
 
@@ -15,6 +14,9 @@ public class Window extends JFrame implements Runnable{
      * Key listen object
      */
     KL keyListener = new KL();
+
+    //Players
+    Rect playerOne, ai, ball;
 
 
     public Window(){
@@ -36,6 +38,11 @@ public class Window extends JFrame implements Runnable{
          * Register key listene to our window object
          */
         this.addKeyListener(keyListener);
+
+        playerOne = new Rect(Constants.HZ_PADDOING,40, Constants.PADDLE_WIDTH, Constants.PADDLE_HEIGHT, Constants.PADDLE_COLOR);
+        ai = new Rect(Constants.SCREEN_WIDTH - Constants.PADDLE_WIDTH - Constants.HZ_PADDOING, 40, Constants.PADDLE_WIDTH, Constants.PADDLE_HEIGHT, Constants.PADDLE_COLOR);
+        ball = new Rect(Constants.SCREEN_WIDTH /2, Constants.SCREEN_HEIGHT /2, Constants.BALL_WIDTH, Constants.BALL_HEIGHT, Constants.BALL_COLOR);
+
     }
 
     public void update(double dt) {
@@ -46,14 +53,20 @@ public class Window extends JFrame implements Runnable{
         g2.setColor(Color.black);
         g2.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
+
+        //Pass graphic object to draw object
+        playerOne.draw(g2);
+        ai.draw(g2);
+        ball.draw(g2);
+
         /**
          * Listen to the user input
          */
-        if(keyListener.isKeyPressed(KeyEvent.VK_UP)){
-            System.out.println("The user is press the up arrow" + KeyEvent.VK_UP);
-        }else if(keyListener.isKeyPressed(KeyEvent.VK_DOWN)){
-            System.out.println("The user is press the down arrow" + KeyEvent.VK_DOWN);
-        }
+//        if(keyListener.isKeyPressed(KeyEvent.VK_UP)){
+//            System.out.println("The user is press the up arrow" + KeyEvent.VK_UP);
+//        }else if(keyListener.isKeyPressed(KeyEvent.VK_DOWN)){
+//            System.out.println("The user is press the down arrow" + KeyEvent.VK_DOWN);
+//        }
 
         /**
          * Display our Current frames per second (FPS) to the screen

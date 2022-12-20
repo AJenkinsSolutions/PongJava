@@ -12,17 +12,24 @@ public class Constants {
     /**
      * Paddle Constants
      */
-    public static final int PADDLE_WIDTH = 10;
-    public static final int PADDLE_HEIGHT = 100;
+    public static final double PADDLE_WIDTH = 10;
+    public static final double PADDLE_HEIGHT = 100;
     public static final Color PADDLE_COLOR = Color.white;
-    public static final int HZ_PADDOING = 20;
+    public static final double HZ_PADDOING = 20;
+
+    public static final double PADDLE_SPEED = 250;
 
     /**
      * Ball Constants
      */
-    public static final int BALL_WIDTH = 10;
-    public static final int BALL_HEIGHT = 10;
+    public static final double BALL_WIDTH = 10;
+    public static final double BALL_HEIGHT = 10;
     public static final Color BALL_COLOR = Color.WHITE;
+
+
+    //insets
+    public static  double TOOL_BAR_HEIGHT;
+    public static  double TOOL_BAR_BOTTOM;
 
 
 }

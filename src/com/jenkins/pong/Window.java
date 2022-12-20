@@ -1,22 +1,22 @@
 package com.jenkins.pong;
 
 import javax.swing.JFrame;
-import java.awt.Graphics2D;
-import java.awt.Color;
+import java.awt.*;
 
 public class Window extends JFrame implements Runnable{
 
     /**
      * Declaring the Graphics object
      */
-    Graphics2D g2;
+    public Graphics2D g2;
     /**
      * Key listen object
      */
-    KL keyListener = new KL();
+    public KL keyListener = new KL();
+    //Declare our players
+    public Rect playerOne, ai, ball;
 
-    //Players
-    Rect playerOne, ai, ball;
+    public PlayerController playerController;
 
 
     public Window(){
@@ -38,26 +38,35 @@ public class Window extends JFrame implements Runnable{
          * Register key listene to our window object
          */
         this.addKeyListener(keyListener);
+        Constants.TOOL_BAR_HEIGHT = this.getInsets().top;
+        Constants.TOOL_BAR_BOTTOM = this.getInsets().bottom;
 
+
+        //Initialize player objects
         playerOne = new Rect(Constants.HZ_PADDOING,40, Constants.PADDLE_WIDTH, Constants.PADDLE_HEIGHT, Constants.PADDLE_COLOR);
+        playerController = new PlayerController(playerOne, keyListener);
+
+
         ai = new Rect(Constants.SCREEN_WIDTH - Constants.PADDLE_WIDTH - Constants.HZ_PADDOING, 40, Constants.PADDLE_WIDTH, Constants.PADDLE_HEIGHT, Constants.PADDLE_COLOR);
         ball = new Rect(Constants.SCREEN_WIDTH /2, Constants.SCREEN_HEIGHT /2, Constants.BALL_WIDTH, Constants.BALL_HEIGHT, Constants.BALL_COLOR);
+
+
 
     }
 
     public void update(double dt) {
-        /**
-         * We Set the area in which we want our background color to fill
-         * Set the background color using the g2 object
-         */
-        g2.setColor(Color.black);
-        g2.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+
+        Image dbImage = createImage(getWidth(), getHeight());
+        Graphics dbg = dbImage.getGraphics();
+
+        this.draw(dbg);
+        g2.drawImage(dbImage, 0,0, this);
 
 
-        //Pass graphic object to draw object
-        playerOne.draw(g2);
-        ai.draw(g2);
-        ball.draw(g2);
+
+        playerController.update(dt);
+
+
 
         /**
          * Listen to the user input
@@ -68,12 +77,34 @@ public class Window extends JFrame implements Runnable{
 //            System.out.println("The user is press the down arrow" + KeyEvent.VK_DOWN);
 //        }
 
+
+
         /**
          * Display our Current frames per second (FPS) to the screen
          */
 //        System.out.println("" + dt + " seconds passed since the last frame" );
         System.out.println(1 / dt + " fps");
 
+    }
+
+    /**
+     * drawing everything off screen
+     * swapping the buffer for a smoother image
+     * @param g
+     */
+    public void draw(Graphics g){
+        Graphics2D g2 = (Graphics2D)g;
+        /**
+         * We Set the area in which we want our background color to fill
+         * Set the background color using the g2 object
+         */
+        g2.setColor(Color.black);
+        g2.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+
+        //Pass graphic object to draw object
+        playerOne.draw(g2);
+        ai.draw(g2);
+        ball.draw(g2);
     }
     public void run() {
         /**
